@@ -13,64 +13,54 @@
 // limitations under the License.
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 final class MyJSON implements JSON {
-	HashMap<String, ArrayList<JSON>> obj;
+	private HashMap<String, String> stringVals;
+	private HashMap<String, JSON> jsonVals;
 
 	
 	public MyJSON(){
-		obj = new HashMap<String,ArrayList<JSON>>();
+		stringVals = new HashMap<String, String>();
+		jsonVals = new HashMap<String, JSON>();
 	}
 	
   @Override
   public JSON getObject(String name) {
-	JSON result = new MyJSON();
-	if(!obj.containsKey(name)){
-		return null;
+	if(name.length() == 0 || name == null){
+		throw new IllegalArgumentException("Must be valid input");
 	}
-	JSON val = obj.get(name).get(0);
-	result.setObject(name, val);
-    return result;
+	return jsonVals.get(name);
   }
 
   @Override
   public JSON setObject(String name, JSON value) {
-	ArrayList<JSON> vals = obj.get(name);
-	vals.add(value);
-	obj.put(name, vals);
+	jsonVals.put(name, value);
     return this;
   }
 
   @Override
   public String getString(String name) {
-	if(!obj.containsKey(name)){
-		return null;
-	}
-	ArrayList<JSON> result = obj.get(name);
-	return result.toString();   
+	return stringVals.get(name);  
   }
 
   @Override
   public JSON setString(String name, String value) {
-	ArrayList<JSON> thing = obj.get(name);
-	obj.remove(name);
-	obj.put(value, thing);
-    return this;
+	stringVals.put(name, value);
+	return this;
   }
 
   @Override
   public void getObjects(Collection<String> names) {
-    for(String s: obj.keySet()){
-    	names.add(obj.get(s).toString());
+    for(String j: jsonVals.keySet()){
+    	names.add(j);
     }
   }
 
   @Override
   public void getStrings(Collection<String> names) {
-    for(String s: obj.keySet()){
+    for(String s: stringVals.keySet()){
     	names.add(s);
     }
   }

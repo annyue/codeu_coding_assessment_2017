@@ -46,7 +46,7 @@ final class MyJSONParser implements JSONParser {
 	
 	/*
 	 * splits the current string based on where the ':' is. Ideally would have used recursion but ran out
-	 * of time. 
+	 * of time. Currently have no method to check whether there is a comma if needed. 
 	 */
 	private ArrayList<String> splitString(String in){
 		if(in.charAt(0) == '{' && in.charAt(in.length()-1) == '}'){
@@ -70,7 +70,7 @@ final class MyJSONParser implements JSONParser {
 	/*
 	 * 0 - false
 	 * 1 - true
-	 * 2 - false but needs to be split again
+	 * 2 - false but needs to be split again (has a nested object and isn't just a string yet)
 	 * checks whether the input is a valid String
 	 */
 	private int isValidString(String in){
