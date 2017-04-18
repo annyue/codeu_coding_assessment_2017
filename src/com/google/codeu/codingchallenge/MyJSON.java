@@ -12,43 +12,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.codeu.codingchallenge;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 final class MyJSON implements JSON {
+	HashMap<String, ArrayList<JSON>> obj;
 
+	
+	public MyJSON(){
+		obj = new HashMap<String,ArrayList<JSON>>();
+	}
+	
   @Override
   public JSON getObject(String name) {
-    // TODO: implement this
-    return null;
+	JSON result = new MyJSON();
+	if(!obj.containsKey(name)){
+		return null;
+	}
+	JSON val = obj.get(name).get(0);
+	result.setObject(name, val);
+    return result;
   }
 
   @Override
   public JSON setObject(String name, JSON value) {
-    // TODO: implement this
+	ArrayList<JSON> vals = obj.get(name);
+	vals.add(value);
+	obj.put(name, vals);
     return this;
   }
 
   @Override
   public String getString(String name) {
-    // TODO: implement this
-    return null;
+	if(!obj.containsKey(name)){
+		return null;
+	}
+	ArrayList<JSON> result = obj.get(name);
+	return result.toString();   
   }
 
   @Override
   public JSON setString(String name, String value) {
-    // TODO: implement this
+	ArrayList<JSON> thing = obj.get(name);
+	obj.remove(name);
+	obj.put(value, thing);
     return this;
   }
 
   @Override
   public void getObjects(Collection<String> names) {
-    // TODO: implement this
+    for(String s: obj.keySet()){
+    	names.add(obj.get(s).toString());
+    }
   }
 
   @Override
   public void getStrings(Collection<String> names) {
-    // TODO: implement this
+    for(String s: obj.keySet()){
+    	names.add(s);
+    }
   }
 }
